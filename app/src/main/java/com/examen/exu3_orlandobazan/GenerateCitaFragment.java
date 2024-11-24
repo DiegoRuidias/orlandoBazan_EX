@@ -3,6 +3,7 @@ package com.examen.exu3_orlandobazan;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,8 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GenerateCitaFragment extends Fragment {
     private EditText editTextFecha, editTextHora, editTextNombrePaciente;
-    private Button buttonGuardarCita;
-
+    private Button buttonGuardarCita, buttonAnularCita;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_generate_cita, container, false);
@@ -36,9 +36,10 @@ public class GenerateCitaFragment extends Fragment {
         editTextHora = view.findViewById(R.id.editTextHora);
         editTextNombrePaciente = view.findViewById(R.id.editTextNombrePaciente);
         buttonGuardarCita = view.findViewById(R.id.buttonGuardarCita);
+        buttonAnularCita = view.findViewById(R.id.buttonAnularCita);
 
         buttonGuardarCita.setOnClickListener(v -> guardarCita());
-
+        buttonAnularCita.setOnClickListener(v -> navegarAAnularCita());
         return view;
     }
 
@@ -75,6 +76,11 @@ public class GenerateCitaFragment extends Fragment {
                 Toast.makeText(getContext(), "Error de conexión", Toast.LENGTH_SHORT).show();
             }
         });
+
+    }
+    private void navegarAAnularCita() {
+        Navigation.findNavController(requireView())
+                .navigate(R.id.action_generateCitaFragment_to_anularCitaFragment);
     }
 
 }

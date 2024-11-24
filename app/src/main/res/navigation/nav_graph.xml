@@ -37,7 +37,11 @@
         android:id="@+id/generateCitaFragment"
         android:name="com.examen.exu3_orlandobazan.GenerateCitaFragment"
         android:label="fragment_generate_cita"
-        tools:layout="@layout/fragment_generate_cita" />
+        tools:layout="@layout/fragment_generate_cita" >
+        <action
+            android:id="@+id/action_generateCitaFragment_to_anularCitaFragment"
+            app:destination="@id/anularCitaFragment" />
+    </fragment>
 
     <!-- Fragment para Anular Cita -->
     <fragment

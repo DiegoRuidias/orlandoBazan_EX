@@ -50,4 +50,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <!-- Botón para navegar al fragmento de Anular Cita -->
+    <Button
+        android:id="@+id/buttonAnularCita"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Anular Cita"
+        app:layout_constraintTop_toBottomOf="@id/buttonGuardarCita"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
