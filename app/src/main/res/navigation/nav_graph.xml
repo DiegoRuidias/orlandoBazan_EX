@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.examen.exu3_orlandobazan.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_userFragment"
+            app:destination="@id/userFragment" />
+    </fragment>
+
+    <!-- Fragment de Usuario (Pantalla con las opciones) -->
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.examen.exu3_orlandobazan.UserFragment"
+        android:label="fragment_user"
+        tools:layout="@layout/fragment_user">
+        <argument
+            android:name="token"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_userFragment_to_generateCitaFragment"
+            app:destination="@id/generateCitaFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_anularCitaFragment"
+            app:destination="@id/anularCitaFragment" />
+    </fragment>
+
+    <!-- Fragment para Generar Cita -->
+    <fragment
+        android:id="@+id/generateCitaFragment"
+        android:name="com.examen.exu3_orlandobazan.GenerateCitaFragment"
+        android:label="fragment_generate_cita"
+        tools:layout="@layout/fragment_generate_cita" />
+
+    <!-- Fragment para Anular Cita -->
+    <fragment
+        android:id="@+id/anularCitaFragment"
+        android:name="com.examen.exu3_orlandobazan.AnularCitaFragment"
+        android:label="fragment_anular_cita"
+        tools:layout="@layout/fragment_anular_cita" />
+</navigation>
