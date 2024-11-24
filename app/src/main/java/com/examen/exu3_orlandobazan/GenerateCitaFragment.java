@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.examen.exu3_orlandobazan.Interface.BquirogaorlandoAPI;
 import com.examen.exu3_orlandobazan.Model.CitaRequest;
 import com.examen.exu3_orlandobazan.Model.CitaResponse;
+import com.examen.exu3_orlandobazan.Model.GenericResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,8 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GenerateCitaFragment extends Fragment {
     private EditText editTextFecha, editTextHora, editTextNombrePaciente;
-    private Button buttonRegistrarCita;
-    private TextView textViewCitaId;
+    private Button buttonGuardarCita;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,15 +35,14 @@ public class GenerateCitaFragment extends Fragment {
         editTextFecha = view.findViewById(R.id.editTextFecha);
         editTextHora = view.findViewById(R.id.editTextHora);
         editTextNombrePaciente = view.findViewById(R.id.editTextNombrePaciente);
-        buttonRegistrarCita = view.findViewById(R.id.buttonRegistrarCita);
-        textViewCitaId = view.findViewById(R.id.textViewCitaId);
+        buttonGuardarCita = view.findViewById(R.id.buttonGuardarCita);
 
-        buttonRegistrarCita.setOnClickListener(v -> registrarCita());
+        buttonGuardarCita.setOnClickListener(v -> guardarCita());
 
         return view;
     }
 
-    private void registrarCita() {
+    private void guardarCita() {
         String fecha = editTextFecha.getText().toString();
         String hora = editTextHora.getText().toString();
         String nombrePaciente = editTextNombrePaciente.getText().toString();
@@ -60,22 +59,19 @@ public class GenerateCitaFragment extends Fragment {
         BquirogaorlandoAPI api = retrofit.create(BquirogaorlandoAPI.class);
 
         CitaRequest citaRequest = new CitaRequest(fecha, hora, nombrePaciente);
-        Call<CitaResponse> call = api.registrarCita(citaRequest);
-        call.enqueue(new Callback<CitaResponse>() {
+        Call<GenericResponse> call = api.guardarCita(citaRequest);
+        call.enqueue(new Callback<GenericResponse>() {
             @Override
-            public void onResponse(Call<CitaResponse> call, Response<CitaResponse> response) {
+            public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    CitaResponse cita = response.body();
-                    textViewCitaId.setText("ID de la cita: " + cita.getCitaId());
-                    textViewCitaId.setVisibility(View.VISIBLE);
-                    Toast.makeText(getContext(), "Cita registrada exitosamente", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), "Error al registrar la cita", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error al guardar la cita", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<CitaResponse> call, Throwable t) {
+            public void onFailure(Call<GenericResponse> call, Throwable t) {
                 Toast.makeText(getContext(), "Error de conexión", Toast.LENGTH_SHORT).show();
             }
         });

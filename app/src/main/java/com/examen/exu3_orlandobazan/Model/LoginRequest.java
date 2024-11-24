@@ -1,10 +1,10 @@
 package com.examen.exu3_orlandobazan.Model;
 
-public class AuthRequest {
+public class LoginRequest {
     private String username;
     private String password;
 
-    public AuthRequest(String dni, String password) {
+    public LoginRequest(String dni, String password) {
         this.username = dni;
         this.password = password;
     }

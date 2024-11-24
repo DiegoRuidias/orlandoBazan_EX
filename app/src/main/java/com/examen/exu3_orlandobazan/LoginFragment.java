@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.examen.exu3_orlandobazan.Interface.BquirogaorlandoAPI;
-import com.examen.exu3_orlandobazan.Model.AuthRequest;
+import com.examen.exu3_orlandobazan.Model.LoginRequest;
 import com.examen.exu3_orlandobazan.Model.TokenResponse;
 
 import retrofit2.Call;
@@ -24,14 +24,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class LoginFragment extends Fragment {
-    private EditText editTextDNI, editTextPassword;
+    private EditText editTextDni, editTextPassword;
     private Button buttonLogin;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        editTextDNI = view.findViewById(R.id.editTextDNI);
+        editTextDni = view.findViewById(R.id.editTextDNI);
         editTextPassword = view.findViewById(R.id.editTextPassword);
         buttonLogin = view.findViewById(R.id.buttonLogin);
 
@@ -41,11 +41,11 @@ public class LoginFragment extends Fragment {
     }
 
     private void authenticateUser() {
-        String dni = editTextDNI.getText().toString();
+        String dni = editTextDni.getText().toString();
         String password = editTextPassword.getText().toString();
 
         if (dni.isEmpty() || password.isEmpty()) {
-            Toast.makeText(getContext(), "Complete los campos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Complete todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -55,19 +55,22 @@ public class LoginFragment extends Fragment {
                 .build();
         BquirogaorlandoAPI api = retrofit.create(BquirogaorlandoAPI.class);
 
-        AuthRequest authRequest = new AuthRequest(dni, password);
-        Call<TokenResponse> call = api.authenticate(authRequest);
+        LoginRequest loginRequest = new LoginRequest(dni, password);
+        Call<TokenResponse> call = api.authenticate(loginRequest);
         call.enqueue(new Callback<TokenResponse>() {
             @Override
             public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    String token = response.body().getToken();
-                    Toast.makeText(getContext(), "Token: " + token, Toast.LENGTH_SHORT).show();
+                    String token = response.body().getAccessToken();
+                    Toast.makeText(getContext(), "Autenticación exitosa", Toast.LENGTH_SHORT).show();
 
-                    // Navegar a UserFragment
+                    // Crear un Bundle para pasar el token al siguiente fragmento
                     Bundle bundle = new Bundle();
                     bundle.putString("token", token);
-                    Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_userFragment, bundle);
+
+                    // Navegar al fragmento "Generar Citas"
+                    Navigation.findNavController(requireView())
+                            .navigate(R.id.action_loginFragment_to_generateCitaFragment, bundle);
                 } else {
                     Toast.makeText(getContext(), "Credenciales inválidas", Toast.LENGTH_SHORT).show();
                 }
